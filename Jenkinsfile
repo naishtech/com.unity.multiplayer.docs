@@ -23,7 +23,7 @@ pipeline {
             sh 'cp temp/node_modules/.bin/docusaurus /usr/local/bin/' 
             sh 'chmod +x /usr/local/bin/docusaurus' */
             sh 'yarn install'
-            sh 'npm update'
+            sh 'npm update --force'
             sh 'yarn build'
          }
       }
