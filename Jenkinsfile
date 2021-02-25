@@ -11,6 +11,7 @@ pipeline {
       stage('build') {
          steps {
             sh 'uptime && date && ls -lah'
+            sh 'uname -a'
          }
       }
    }
