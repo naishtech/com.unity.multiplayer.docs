@@ -17,11 +17,13 @@ pipeline {
 	    sh 'apt-get update && apt-get install -y nodejs yarn'
             sh 'rm -rf temp'
             sh 'npx @docusaurus/init@latest init temp classic'
-            sh 'apt-get install -y mlocate'
+            /* sh 'apt-get install -y mlocate'
             sh 'updatedb' 
             sh 'locate -i docusaurus'
-            sh 'cp temp/node_modules/.bin/docusaurus /usr/local/bin/'
-            sh 'chmod +x /usr/local/bin/docusaurus'
+            sh 'cp temp/node_modules/.bin/docusaurus /usr/local/bin/' 
+            sh 'chmod +x /usr/local/bin/docusaurus' */
+            sh 'yarn install'
+            sh 'npm update'
             sh 'yarn build'
          }
       }
