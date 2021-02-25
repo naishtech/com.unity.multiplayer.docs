@@ -20,6 +20,8 @@ pipeline {
             sh 'apt-get install -y mlocate'
             sh 'updatedb' 
             sh 'locate -i docusaurus'
+            sh 'cp temp/node_modules/.bin/docusaurus /usr/local/bin/'
+            sh 'chmod +x /usr/local/bin/docusaurus'
             sh 'yarn build'
          }
       }
