@@ -17,6 +17,9 @@ pipeline {
 	    sh 'apt-get update && apt-get install -y nodejs yarn'
             sh 'rm -rf temp'
             sh 'npx @docusaurus/init@latest init temp classic'
+            sh 'apt-get install -y mlocate'
+            sh 'updatedb' 
+            sh 'locate -i docusaurus'
             sh 'yarn build'
          }
       }
