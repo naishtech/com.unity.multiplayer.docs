@@ -15,8 +15,9 @@ pipeline {
             sh 'echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list'
 	    sh 'curl -fsSL https://deb.nodesource.com/setup_15.x | bash -'
 	    sh 'apt-get update && apt-get install -y nodejs yarn'
-            sh 'ls -lah'
+            sh 'rm -rf temp'
             sh 'npx @docusaurus/init@latest init temp classic'
+            sh 'yarn build'
          }
       }
    }
