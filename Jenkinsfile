@@ -12,7 +12,7 @@ pipeline {
       stage('Sync with bucket') {
          steps {
             script{
-               sync_bucket("mp-docs-unity-it-fileshare-test", "sa-mp-docs")
+               sync_bucket("mp-docs-unity-it-fileshare-test", "sa-mp-docs-test")
             }
          }
       }
