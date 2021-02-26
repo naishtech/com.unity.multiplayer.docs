@@ -66,9 +66,10 @@ def sync_bucket(BUCKET, CREDS) {
 
 def akamai_purge(AKAMAI_URL, CREDS) {
     withCredentials([file(credentialsId: CREDS, variable: 'EDGERC')]) {
+      writeFile file: '/tmp/edgerc', text: readFile(EDGERC)
       sh label: '', script: """
-      echo "${EDGERC}" >> ~/.edgerc
-      ls -lah ~/.edgerc
+      ls -lah /tmp/edgerc
+      cat /tmp/edgerc
       """
      }
 }
