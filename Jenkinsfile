@@ -9,6 +9,13 @@ pipeline {
    }
 
     stages {
+      stage('Sync with bucket') {
+         steps {
+            script{
+               sync_bucket("mp-docs-unity-it-fileshare-test", "sa-mp-docs")
+            }
+         }
+      }
       stage('Install nodejs and yarn') {
          steps {
             sh 'curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -'
@@ -35,4 +42,13 @@ pipeline {
          }
       }
    }
+}
+
+def sync_bucket(BUCKET, CREDS) {
+    withCredentials([file(credentialsId: CREDS, variable: 'SERVICEACCOUNT')]) {
+      sh label: '', script: """
+      gcloud auth activate-service-account --key-file ${SERVICEACCOUNT}
+      gcloud auth configure-docker --quiet
+      """
+     }
 }
