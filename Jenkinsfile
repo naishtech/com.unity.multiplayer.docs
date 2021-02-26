@@ -49,6 +49,7 @@ def sync_bucket(BUCKET, CREDS) {
       sh label: '', script: """
       gcloud auth activate-service-account --key-file ${SERVICEACCOUNT}
       gcloud auth configure-docker --quiet
+      gsutil ls gs://mp-docs-unity-it-fileshare-test/
       """
      }
 }
