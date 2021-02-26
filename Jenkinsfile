@@ -45,11 +45,12 @@ pipeline {
 }
 
 def sync_bucket(BUCKET, CREDS) {
+    /* gsutil rsync -d will delete everything in the bucket that is not in the build dir and will update everything else */
     withCredentials([file(credentialsId: CREDS, variable: 'SERVICEACCOUNT')]) {
       sh label: '', script: """
       gcloud auth activate-service-account --key-file ${SERVICEACCOUNT}
       gsutil ls gs://${BUCKET}/
-      gsutil -m rsync -r -d -n build/ gs://${BUCKET}
+      gsutil -m rsync -r -d build/ gs://${BUCKET}
       gsutil ls gs://${BUCKET}/
       """
      }
