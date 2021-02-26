@@ -2,6 +2,7 @@ properties([pipelineTriggers([githubPush()])])
 import java.text.SimpleDateFormat
 
 def BUCKET_NAME ="mp-docs-stg-unity-it-fileshare-test"
+def AKAMAI_URL ="https://docs-multiplayer-stg.unity3d.com/"
 
 pipeline {
    agent {
@@ -9,6 +10,13 @@ pipeline {
    }
 
     stages {
+      stage('Akamai CDN purge data') {
+         steps {
+            script{
+               akamai_purge(AKAMAI_URL, "akamai-api-token")
+            }
+         }
+      }
       stage('Install nodejs and yarn') {
          steps {
             sh 'curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -'
@@ -52,6 +60,15 @@ def sync_bucket(BUCKET, CREDS) {
       gsutil ls gs://${BUCKET}/
       gsutil -m rsync -r -d build/ gs://${BUCKET}
       gsutil ls gs://${BUCKET}/
+      """
+     }
+}
+
+def akamai_purge(AKAMAI_URL, CREDS) {
+    withCredentials([file(credentialsId: CREDS, variable: 'EDGERC')]) {
+      sh label: '', script: """
+      echo "${EDGERC}" >> ~/.edgerc
+      ls -lah ~/.edgerc
       """
      }
 }
