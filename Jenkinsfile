@@ -10,13 +10,6 @@ pipeline {
    }
 
     stages {
-      stage('Akamai CDN purge data') {
-         steps {
-            script{
-               akamai_purge(AKAMAI_URL, "akamai-api-token")
-            }
-         }
-      }
       stage('Install nodejs and yarn') {
          steps {
             sh 'curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -'
@@ -49,6 +42,13 @@ pipeline {
             }
          }
       }
+      stage('Akamai CDN purge data') {
+         steps {
+            script{
+               akamai_purge(AKAMAI_URL, "akamai-api-token")
+            }
+         }
+      }
    }
 }
 
@@ -68,8 +68,9 @@ def akamai_purge(AKAMAI_URL, CREDS) {
     withCredentials([file(credentialsId: CREDS, variable: 'EDGERC')]) {
       writeFile file: '/tmp/edgerc', text: readFile(EDGERC)
       sh label: '', script: """
-      ls -lah /tmp/edgerc
-      cat /tmp/edgerc
+      curl -sL https://github.com/akamai/cli-purge/releases/download/1.0.1/akamai-purge-1.0.1-linuxamd64 -o akamai
+      chmod +x akamai
+      ./akamai --section ccu --edgerc "/tmp/edgerc" invalidate https://docs-multiplayer-stg.unity3d.com/
       """
      }
 }
