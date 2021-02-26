@@ -1,7 +1,7 @@
 properties([pipelineTriggers([githubPush()])])
 import java.text.SimpleDateFormat
 
-def bucket_name ="mp-docs-stg-unity-it-fileshare-test"
+def BUCKET_NAME ="mp-docs-stg-unity-it-fileshare-test"
 
 pipeline {
    agent {
@@ -12,7 +12,7 @@ pipeline {
       stage('Sync with bucket') {
          steps {
             script{
-               sync_bucket(bucket_name, "sa-mp-docs")
+               sync_bucket(BUCKET_NAME, "sa-mp-docs")
             }
          }
       }
