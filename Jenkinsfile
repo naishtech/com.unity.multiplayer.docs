@@ -1,7 +1,7 @@
 properties([pipelineTriggers([githubPush()])])
 import java.text.SimpleDateFormat
 
-def service_name ="test"
+def bucket_name ="mp-docs-stg-unity-it-fileshare-test"
 
 pipeline {
    agent {
@@ -12,7 +12,7 @@ pipeline {
       stage('Sync with bucket') {
          steps {
             script{
-               sync_bucket("mp-docs-unity-it-fileshare-test", "sa-mp-docs-test")
+               sync_bucket(bucket_name, "sa-mp-docs-test")
             }
          }
       }
@@ -49,7 +49,7 @@ def sync_bucket(BUCKET, CREDS) {
       sh label: '', script: """
       gcloud auth activate-service-account --key-file ${SERVICEACCOUNT}
       gcloud auth configure-docker --quiet
-      gsutil ls gs://mp-docs-unity-it-fileshare-test/
+      gsutil ls gs://${BUCKET_NAME}/
       """
      }
 }
