@@ -12,7 +12,7 @@ pipeline {
       stage('Sync with bucket') {
          steps {
             script{
-               sync_bucket(bucket_name, "sa-mp-docs-test")
+               sync_bucket(bucket_name, "sa-mp-docs")
             }
          }
       }
